@@ -1,6 +1,8 @@
 import csv
 from datetime import datetime
 import os
+from Tkinter import *
+from tkFileDialog   import askopenfilename
 
 
 def get_filenames(directory):
@@ -74,7 +76,7 @@ def sum_amounts(expense_list):
     total_amount += float(row['Amount'])
   return total_amount
 
-def main():
+def calculate():
   filenames = get_filenames("expense_files/")
   files_by_person = split_filenames_by_person(filenames)
   person_expenses = {}
@@ -84,6 +86,29 @@ def main():
     # print("%s's Info: Debit=%f Credit=%f" % (person_name, debit_amt, credit_amt))
     print("%s debit: %f" % (person_name, sum_amounts(person_expenses[person_name + ' debit'])))
     print("%s credit: %f" % (person_name, sum_amounts(person_expenses[person_name + ' credit'])))
+
+def callback():
+    name= askopenfilename() 
+    print(name)
+
+def main():
+  root = Tk() 
+  root.title("Household Expenser")
+  root.geometry('750x700')
+  
+  lbl = Label(root, text="Hello")
+  lbl.grid(column=0, row=0)
+  
+  txt = Entry(root,width=10)
+  txt.grid(column=1, row=0)
+  
+  btn = Button(root, text="Click Me", command=calculate)
+  btn.grid(column=2, row=0)
+
+  fill_btn = Button(root, text='File Open', command=callback)
+  fill_btn.grid(column=3, row=0)
+  
+  root.mainloop()
 
 if __name__ == "__main__":
   main()
