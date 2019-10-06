@@ -1,27 +1,13 @@
-import csv
 from datetime import datetime
-import os
-from Tkinter import *
-from tkFileDialog   import askopenfilename
+import tkinter as tk
 
-
-def get_filenames(directory):
-  filenames = []
-  for root, dirs, files in os.walk(directory):
-    for file in files:
-      if file.endswith(".csv"):
-        filenames.append(os.path.join(root, file))
-  return filenames
-
-def split_filenames_by_person(filenames):
-  files_by_person = {}
-  for filename in filenames:
-    person_name = filename.split('/')[-1].split('_')[0]
-    if person_name in files_by_person:
-      files_by_person[person_name].append(filename)
-    else:
-      files_by_person[person_name] = [filename]
-  return files_by_person
+# Step 1: Select folder with files
+# Step 2: Reads all files in folder and tries to identify/list
+# Step 3: Shows user what it thinks they want
+# Step 4: Ask for Start/End Date
+# Step 5: Calculate Debit/Credit for each user
+# Step 6: Break down credits & debits by description
+import ListManager
 
 # "Date","Description","Original Description","Amount","Transaction Type","Category","Account Name","Labels","Notes"
 # Date,Description,Amount
@@ -77,7 +63,7 @@ def sum_amounts(expense_list):
   return total_amount
 
 def calculate():
-  filenames = get_filenames("expense_files/")
+  filenames = get_filenames_in_directory("expense_files/")
   files_by_person = split_filenames_by_person(filenames)
   person_expenses = {}
   for person_name, person_files in files_by_person.items():
@@ -87,27 +73,12 @@ def calculate():
     print("%s debit: %f" % (person_name, sum_amounts(person_expenses[person_name + ' debit'])))
     print("%s credit: %f" % (person_name, sum_amounts(person_expenses[person_name + ' credit'])))
 
-def callback():
-    name= askopenfilename() 
-    print(name)
-
 def main():
-  root = Tk() 
+  root = tk.Tk() 
   root.title("Household Expenser")
-  root.geometry('750x700')
-  
-  lbl = Label(root, text="Hello")
-  lbl.grid(column=0, row=0)
-  
-  txt = Entry(root,width=10)
-  txt.grid(column=1, row=0)
-  
-  btn = Button(root, text="Click Me", command=calculate)
-  btn.grid(column=2, row=0)
+  root.geometry('400x400')
 
-  fill_btn = Button(root, text='File Open', command=callback)
-  fill_btn.grid(column=3, row=0)
-  
+  list_manager = ListManager.ListManager(root)
   root.mainloop()
 
 if __name__ == "__main__":
