@@ -144,7 +144,7 @@ class InfoManager(tk.Frame):
     def call_transaction_manager(self):
         self.prepped_files = []
         self.prep_files()
-        self.parent.frames['TransactionManager'].read_file_transactions(
+        self.parent.frames['TransactionManager'].read_transactions(
             self.prepped_files, self.start_date, self.end_date)
         self.parent.show_frame('TransactionManager')
 
