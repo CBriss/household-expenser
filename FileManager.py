@@ -16,7 +16,7 @@ class FileManager(tk.Frame):
         self.folderPath = tk.StringVar()
 
         label1 = tk.Label(
-            self, text='Welcome to Household Expenser', bg="#0a7bcc", fg='#ffffff', font="Arial 14", padx=50, pady=25)
+            self, text='Welcome to Household Expenser', bg="#0a7bcc", fg='#ffffff', font="Arial 15", padx=50, pady=25)
         label1.pack()
 
         btnFind = tk.Button(self, text="Browse Folder",

@@ -116,19 +116,21 @@ class InfoManager(tk.Frame):
         people_files_dict = ast.literal_eval(self.files_by_person)
 
         for person, files in people_files_dict.items():
-            person_frame = tk.Frame(self.file_frame, background="#0a7bcc")
+            person_frame = tk.Frame(
+                self.file_frame, background="#0a7bcc", pady=25)
             label = tk.Label(
                 person_frame,
-                text="{person_name}".format(person_name=person),
-                font=("Helvetica", 30),
+                text="{person_name}".format(person_name=person.capitalize()),
+                font=("Helvetica", 25),
                 background="#0a7bcc",
                 foreground='#ffffff'
             )
             label.grid(column=0, row=0)
             file_index = 0
             for file_name in files:
-                label = tk.Label(person_frame, text="{person_name} - {file_name}".format(
-                    person_name=person, file_name=file_name.split("\\")[-1]))
+                label = tk.Label(person_frame, text="{file_name}".format(
+                    file_name=file_name.split("\\")[-1]), font=("Helvetica", 15), background="#0a7bcc",
+                    foreground='#ffffff')
                 label.grid(column=0, row=file_index+1, columnspan=3)
                 option_var = tk.StringVar(self)
                 choices = sorted(CSV_FORMATS.keys())
