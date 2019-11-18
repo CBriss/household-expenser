@@ -1,23 +1,17 @@
 # pip install -r requirements.txt
-from TransactionManager import TransactionManager
-from InfoManager import InfoManager
-from FileManager import FileManager
+
+##
+# Tkinter Imports
 from tkinter import ttk
 import tkinter as tk
 from tkinter import font as tkfont
-from datetime import datetime
 
-
-# Step 1: Select folder with files
-# Step 2: Reads all files in folder and tries to identify/list
-# Step 3: Shows user what it thinks they want
-# Step 4: Ask for Start/End Date
-# Step 5: Calculate Debit/Credit for each user
-# Step 6: Break down credits & debits by description
-
-# "Date","Description","Original Description","Amount","Transaction Type","Category","Account Name","Labels","Notes"
-# Date,Description,Amount
-# Date,Description,Category,Reference Number,Amount
+##
+# HouseholdExpenser Files Import
+from TransactionManager import TransactionManager
+from InfoManager import InfoManager
+from FileManager import FileManager
+from InsightsManager import InsightsManager
 
 
 class HouseholdExpenser(tk.Tk):
@@ -39,12 +33,13 @@ class HouseholdExpenser(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (FileManager, InfoManager, TransactionManager):
+        for F in (FileManager, InfoManager, TransactionManager, InsightsManager):
             frame_name = F.__name__
             frame = F(container=container, parent=self)
             self.frames[frame_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
 
+        self.frames['FileManager'].show()
         self.show_frame('FileManager')
 
     def get_page(self, page_class):

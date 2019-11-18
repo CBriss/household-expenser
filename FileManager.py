@@ -1,20 +1,23 @@
-import os
+##
+# Tkinter Imports
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 
-from InfoManager import InfoManager
+##
+# Python Imports
+import os
 
 
 class FileManager(tk.Frame):
     def __init__(self, container, parent):
         tk.Frame.__init__(self, container, width=200,
                           height=200, background="#0a7bcc")
-
         self.container = container
         self.parent = parent
         self.folderPath = tk.StringVar()
 
+    def show(self):
         label1 = tk.Label(
             self, text='Welcome to Household Expenser', bg="#0a7bcc", fg='#ffffff', font="Arial 15", padx=50, pady=25)
         label1.pack()
@@ -23,21 +26,16 @@ class FileManager(tk.Frame):
                             command=lambda: self.find_files())
         btnFind.pack(padx=50, pady=25)
 
-    ##
-    # Finding Files
     def find_files(self):
         folder_selected = filedialog.askdirectory(
             title="Select The Transaction Directory", initialdir=".")
         self.folderPath.set(folder_selected)
         self.read_folder()
 
-    ##
-    # File Processing
     def read_folder(self):
         filenames = self.find_csv_files()
-        self.parent.frames['InfoManager'].files_by_person = str(
-            self.sort_files(filenames))
-        self.parent.frames['InfoManager'].get_file_types()
+        self.parent.frames['InfoManager'].reset()
+        self.parent.frames['InfoManager'].show(str(self.sort_files(filenames)))
         self.parent.show_frame('InfoManager')
 
     def find_csv_files(self):
