@@ -22,7 +22,7 @@ class FileManager(tk.Frame):
             self, text='Welcome to Household Expenser', bg="#0a7bcc", fg='#ffffff', font="Arial 15", padx=50, pady=25)
         label1.pack()
 
-        btnFind = tk.Button(self, text="Browse Folder",
+        btnFind = tk.Button(self, text="Select Folder",
                             command=lambda: self.find_files())
         btnFind.pack(padx=50, pady=25)
 

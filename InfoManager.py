@@ -40,8 +40,7 @@ CSV_FORMATS = {
 
 class InfoManager(tk.Frame):
     def __init__(self, container, parent):
-        tk.Frame.__init__(self, container, width=200,
-                          height=200, background="#0a7bcc")
+        tk.Frame.__init__(self, container, background="#0a7bcc")
 
         self.container = container
         self.parent = parent
@@ -67,41 +66,25 @@ class InfoManager(tk.Frame):
         self.files_by_person = files_by_person
         back_button = tk.Button(
             self, text="Back", command=lambda: self.parent.show_frame('FileManager'))
-        back_button.pack()
+        back_button.grid(column=1, row=0, padx=10, pady=10)
         read_button = tk.Button(
             self, text="Read Transactions", command=lambda: self.call_transaction_manager())
-        read_button.pack()
+        read_button.grid(column=2, row=0, padx=10, pady=10)
         self.show_date_fields()
-        self.file_frame.pack()
+        self.file_frame.grid(column=1, row=2, columnspan=2)
         row_index = 1
         people_files_dict = ast.literal_eval(self.files_by_person)
         for person, files in people_files_dict.items():
-            person_frame = tk.Frame(
-                self.file_frame, background="#0a7bcc", pady=25)
-            label = tk.Label(
-                person_frame,
-                text="{person_name}".format(person_name=person.capitalize()),
-                font=("Helvetica", 25),
-                background="#0a7bcc",
-                foreground='#ffffff'
-            )
-            label.grid(column=0, row=0)
-            file_index = 0
-            for file_name in files:
-                label = tk.Label(person_frame, text="{file_name}".format(
-                    file_name=file_name.split("\\")[-1]), font=("Helvetica", 15), background="#0a7bcc",
-                    foreground='#ffffff')
-                label.grid(column=0, row=file_index+1, columnspan=3)
-                option_var = tk.StringVar(self)
-                choices = sorted(CSV_FORMATS.keys())
-                option_menu = tk.OptionMenu(
-                    person_frame, option_var, *choices)
-                option_menu.grid(column=3, row=file_index+1)
-                self.file_types["{person_name} - {file_name}".format(
-                    person_name=person, file_name=file_name.split("\\")[-1])] = option_var
-                row_index = row_index + 1
-                file_index = file_index + 1
-            person_frame.pack()
+            row_index = self.show_person_files(person, files, row_index)
+
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
+        self.rowconfigure(3, weight=1)
+        self.rowconfigure(4, weight=1)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(3, weight=1)
 
     def show_date_fields(self):
 
@@ -139,7 +122,36 @@ class InfoManager(tk.Frame):
         end_date_cal.bind("<<DateEntrySelected>>", set_end_sel)
         end_date_cal.grid(column=1, row=1, padx=25)
 
-        date_frame.pack(pady=20)
+        date_frame.grid(column=1, row=1, columnspan=2, pady=20)
+
+    def show_person_files(self, person, files, row_index):
+        person_frame = tk.Frame(
+            self.file_frame, background="#0a7bcc", pady=25)
+        label = tk.Label(
+            person_frame,
+            text="{person_name}".format(person_name=person.capitalize()),
+            font=("Helvetica", 25),
+            background="#0a7bcc",
+            foreground='#ffffff'
+        )
+        label.grid(column=0, row=0)
+        file_index = 0
+        for file_name in files:
+            label = tk.Label(person_frame, text="{file_name}".format(
+                file_name=file_name.split("\\")[-1]), font=("Helvetica", 15), background="#0a7bcc",
+                foreground='#ffffff')
+            label.grid(column=0, row=file_index+1, columnspan=3)
+            option_var = tk.StringVar(self)
+            choices = sorted(CSV_FORMATS.keys())
+            option_menu = tk.OptionMenu(
+                person_frame, option_var, *choices)
+            option_menu.grid(column=3, row=file_index+1)
+            self.file_types["{person_name} - {file_name}".format(
+                person_name=person, file_name=file_name.split("\\")[-1])] = option_var
+            row_index = row_index + 1
+            file_index = file_index + 1
+        person_frame.pack()
+        return row_index
 
     def call_transaction_manager(self):
         self.prepped_files = []

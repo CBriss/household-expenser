@@ -52,18 +52,25 @@ class TransactionManager(tk.Frame):
         self.transactions = {}
 
     def show(self, prepped_files, start_date, end_date):
+
         back_button = tk.Button(
             self, text="Back", command=lambda: self.parent.show_frame('InfoManager'))
-        back_button.pack()
+        back_button.grid(column=1, row=0, padx=10, pady=10)
 
         insights_button = tk.Button(
             self, text="Get Insights", command=lambda: self.call_insights_manager())
-        insights_button.pack()
+        insights_button.grid(column=2, row=0, padx=10, pady=10)
         self.transactions = {}
         tab_container = ttk.Notebook(self)
         self.read_file_transactions(prepped_files, start_date, end_date)
         self.show_file_transactions(tab_container, start_date, end_date)
-        tab_container.pack()
+        tab_container.grid(column=1, row=1, columnspan=2,
+                           padx=25, pady=25, sticky='nsew')
+
+        self.rowconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
 
     def read_file_transactions(self, prepped_files, start_date, end_date):
         for prepped_file in prepped_files:

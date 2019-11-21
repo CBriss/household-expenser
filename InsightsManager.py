@@ -36,7 +36,7 @@ class InsightsManager(tk.Frame):
         self.calculate_totals()
         full_total_debits = 0
         for file_person, insights in self.file_insights.items():
-            person_label = tk.Label(self, text=file_person, bg="#0a7bcc",
+            person_label = tk.Label(self, text=file_person.capitalize(), bg="#0a7bcc",
                                     fg='#ffffff', font="Arial 14")
             person_label.pack()
 
