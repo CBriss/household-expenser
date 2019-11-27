@@ -8,28 +8,42 @@ from tkinter import filedialog
 # Python Imports
 import os
 
+##
+# HouseholdExpenser Files Import
 
-class FileManager(tk.Frame):
+
+class FileManager(ttk.Frame):
     def __init__(self, container, parent):
-        tk.Frame.__init__(self, container, width=200,
-                          height=200, background="#0a7bcc")
+        ttk.Frame.__init__(self, container)
         self.container = container
         self.parent = parent
         self.folderPath = tk.StringVar()
+        self.colors = {}
 
     def show(self):
-        label1 = tk.Label(
-            self, text='Welcome to Household Expenser', bg="#0a7bcc", fg='#ffffff', font="Arial 15", padx=50, pady=25)
+        label1 = ttk.Label(
+            self, text='Welcome to Household Expenser', padding='50 50 50 50')
         label1.pack()
 
-        btnFind = tk.Button(self, text="Select Folder",
-                            command=lambda: self.find_files())
-        btnFind.pack(padx=50, pady=25)
+        label1 = ttk.Label(
+            self, text='Select a folder to read', padding='20 20 20 20', style="Small.TLabel")
+        label1.pack()
 
-    def find_files(self):
-        folder_selected = filedialog.askdirectory(
-            title="Select The Transaction Directory", initialdir=".")
-        self.folderPath.set(folder_selected)
+        default_btn_find = ttk.Button(self, text="Expense Files",
+                                      command=lambda: self.find_files())
+        default_btn_find.pack(padx=50, pady=25)
+
+        btn_find = ttk.Button(self, text="Custom Folder",
+                              command=lambda: self.find_files(True))
+        btn_find.pack(padx=50, pady=25)
+
+    def find_files(self, custom=False):
+        if custom:
+            folder_selected = filedialog.askdirectory(
+                title="Select The Transaction Directory", initialdir=".")
+            self.folderPath.set(folder_selected)
+        else:
+            self.folderPath.set('./expense_files')
         self.read_folder()
 
     def read_folder(self):
