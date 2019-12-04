@@ -5,6 +5,11 @@
 from tkinter import ttk
 import tkinter as tk
 
+
+#####
+# NOTE: To get the style of a ttk widget, use winfo_class()
+# NOTE: To get options for widget, use keys()
+
 ##
 # HouseholdExpenser Files Import
 from TransactionManager import TransactionManager
@@ -64,6 +69,8 @@ s.configure('Small.TLabel', font=("Comic Sans ms", 13))
 s.configure('TButton', font=("Comic Sans ms", 12))
 s.configure('TCheckbutton', background=colors['BLUE'],
             foreground=colors['MED_GREY'])
+s.configure('TMenubutton', font=("Comic Sans ms", 19), background=colors['DARK_GREY'],
+            foreground=colors['WHITE'])
 
 app.geometry("800x650")
 app.mainloop()

@@ -53,8 +53,10 @@ class InfoManager(ttk.Frame):
         self.prepped_files = []
         self.start_date = ''
         self.selected_start_date = tk.StringVar()
+        self.selected_start_date.set(date.today().strftime("%b %d, %Y"))
         self.end_date = ''
         self.selected_end_date = tk.StringVar()
+        self.selected_end_date.set(date.today().strftime("%b %d, %Y"))
 
     def reset(self):
         for widget in self.file_frame.winfo_children():
@@ -65,8 +67,10 @@ class InfoManager(ttk.Frame):
         self.prepped_files = []
         self.start_date = ''
         self.selected_start_date = tk.StringVar()
+        self.selected_start_date.set(date.today().strftime("%b %d, %Y"))
         self.end_date = ''
         self.selected_end_date = tk.StringVar()
+        self.selected_end_date.set(date.today().strftime("%b %d, %Y"))
 
     def show(self, files_by_person):
         self.files_by_person = files_by_person
@@ -96,11 +100,11 @@ class InfoManager(ttk.Frame):
 
         def set_start_sel(event):
             self.start_date = start_date_cal.get_date()
-            self.selected_start_date.set(self.start_date.strftime("%b %d %Y"))
+            self.selected_start_date.set(self.start_date.strftime("%b %d, %Y"))
 
         def set_end_sel(event):
             self.end_date = end_date_cal.get_date()
-            self.selected_end_date.set(self.end_date.strftime("%b %d %Y"))
+            self.selected_end_date.set(self.end_date.strftime("%b %d, %Y"))
 
         date_frame = ttk.Frame(self)
 
@@ -141,8 +145,22 @@ class InfoManager(ttk.Frame):
             style='Small.TLabel'
         )
         end_date_label.grid(column=1, row=1)
-        end_date_cal = DateEntry(date_frame, font="Arial 14", selectmode='day', locale='en_US',
-                                 date_pattern='MM/dd/yyyy')
+        end_date_cal = DateEntry(
+            date_frame, font="Arial 14", selectmode='day', locale='en_US',
+            date_pattern='MM/dd/yyyy', maxdate=date.today(),
+            showweeknumbers=False,
+            firstweekday='sunday',
+            bordercolor=self.colors['DARK_GREY'],
+            background=self.colors['DARK_GREY'],
+            normalbackground=self.colors['DARK_GREY'], normalforeground=self.colors['WHITE'],
+            weekendbackground=self.colors['MED_GREY'], weekendforeground=self.colors['WHITE'],
+            disabledbackground=self.colors['LIGHT_GREY'], disabledforeground=self.colors['DARK_GREY'],
+            disabledselectbackground=self.colors['LIGHT_GREY'], disabledselectforeground=self.colors['DARK_GREY'],
+            headersbackground=self.colors['DARK_GREY'], headersforeground=self.colors['WHITE'],
+            othermonthbackground=self.colors['DARK_GREY'], othermonthforeground=self.colors['LIGHT_GREY'],
+            othermonthwebackground=self.colors['MED_GREY'], othermonthweforeground=self.colors['LIGHT_GREY'],
+            selectbackground=self.colors['BLUE'], selectforeground=self.colors['WHITE'])
+
         end_date_cal.bind("<<DateEntrySelected>>", set_end_sel)
         end_date_cal.grid(column=1, row=2, padx=25)
 
@@ -165,7 +183,9 @@ class InfoManager(ttk.Frame):
         selected_start_date = ttk.Label(
             date_frame,
             textvariable=self.selected_start_date,
-            style="Small.TLabel"
+            style="Small.TLabel",
+            padding='5 5 5 5',
+            background=self.colors['BLUE']
         )
         selected_start_date.grid(
             column=0, row=4, padx=10)
@@ -173,7 +193,9 @@ class InfoManager(ttk.Frame):
         selected_end_date = ttk.Label(
             date_frame,
             textvariable=self.selected_end_date,
-            style="Small.TLabel"
+            style="Small.TLabel",
+            padding='5 5 5 5',
+            background=self.colors['BLUE']
         )
         selected_end_date.grid(column=1, row=4, padx=10)
 
@@ -191,12 +213,14 @@ class InfoManager(ttk.Frame):
         file_index = 0
         for file_name in files:
             label = ttk.Label(person_frame, text="{file_name}".format(
-                file_name=file_name.split("\\")[-1]))
+                file_name=file_name.split("\\")[-1]), padding='0 0 10 0')
             label.grid(column=0, row=file_index+1, columnspan=3, sticky='w')
             option_var = tk.StringVar(self)
             choices = sorted(CSV_FORMATS.keys())
             option_menu = ttk.OptionMenu(
                 person_frame, option_var, 'none', *choices)
+            print(option_menu.keys())
+            print(option_menu['menu'].keys())
             option_menu.grid(column=3, row=file_index+1)
             self.file_types["{person_name} - {file_name}".format(
                 person_name=person, file_name=file_name.split("\\")[-1])] = option_var

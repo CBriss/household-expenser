@@ -76,7 +76,7 @@ class TransactionManager(ttk.Frame):
 
     def read_file_transactions(self, prepped_files, start_date, end_date):
         for prepped_file in prepped_files:
-            if prepped_file['type']:
+            if prepped_file['type'] and prepped_file['type'] in CSV_FORMATS:
                 mapping = CSV_FORMATS[prepped_file['type']]
                 with open(prepped_file['file_name'], mode='r') as csv_file:
                     csv_reader = csv.DictReader(csv_file)
