@@ -9,6 +9,7 @@ import tkinter as tk
 #####
 # NOTE: To get the style of a ttk widget, use winfo_class()
 # NOTE: To get options for widget, use keys()
+# Note: to scroll, check this out: https://stackoverflow.com/questions/17355902/python-tkinter-binding-mousewheel-to-scrollbar
 
 ##
 # HouseholdExpenser Files Import
@@ -71,6 +72,7 @@ s.configure('TCheckbutton', background=colors['BLUE'],
             foreground=colors['MED_GREY'])
 s.configure('TMenubutton', font=("Comic Sans ms", 19), background=colors['DARK_GREY'],
             foreground=colors['WHITE'])
-
+s.configure('TNotebook', font=("Comic Sans ms", 14), background=colors['DARK_GREY'],
+            foreground=colors['WHITE'])
 app.geometry("800x650")
 app.mainloop()

@@ -21,7 +21,6 @@ CSV_FORMATS = {
         'description': 'Description',
         'category': 'Category',
         'amount': 'Amount'
-
     },
     'scotiabank': {
         'date': 'Date',
@@ -57,7 +56,7 @@ class TransactionManager(ttk.Frame):
     def show(self, prepped_files, start_date, end_date):
         back_button = ttk.Button(
             self, text="Back", command=lambda: self.parent.show_frame('InfoManager'))
-        back_button.grid(column=1, row=0, padx=10, pady=10)
+        back_button.grid(column=0, row=0, padx=10, pady=10)
 
         insights_button = ttk.Button(
             self, text="Get Insights", command=lambda: self.call_insights_manager())
@@ -66,7 +65,7 @@ class TransactionManager(ttk.Frame):
         tab_container = ttk.Notebook(self)
         self.read_file_transactions(prepped_files, start_date, end_date)
         self.show_file_transactions(tab_container, start_date, end_date)
-        tab_container.grid(column=1, row=1, columnspan=2,
+        tab_container.grid(column=0, row=1, columnspan=3,
                            padx=25, pady=25, sticky='nsew')
 
         self.rowconfigure(1, weight=1)

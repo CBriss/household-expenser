@@ -40,32 +40,33 @@ class InsightsManager(ttk.Frame):
         self.calculate_totals()
         full_total_debits = 0
         for file_person, insights in self.file_insights.items():
-            person_label = tk.Label(self, text=file_person.capitalize())
+            person_label = ttk.Label(self, text=file_person.capitalize())
             person_label.pack()
 
-            credits_label = tk.Label(self, text="Credits: {total_credits}".format(
+            credits_label = ttk.Label(self, text="Credits: {total_credits}".format(
                 total_credits=round(insights['total_credits'], 3)))
             credits_label.pack()
 
-            debits_label = tk.Label(self, text="Debits: {total_debits}".format(
+            debits_label = ttk.Label(self, text="Debits: {total_debits}".format(
                 total_debits=round(insights['total_debits'], 3)))
             debits_label.pack()
 
             full_total_debits += insights['total_debits']
 
-        full_debits_label = tk.Label(self, text="Total Debits: {full_total_debits}".format(
+        full_debits_label = ttk.Label(self, text="Total Debits: {full_total_debits}".format(
             full_total_debits=round(full_total_debits, 3)))
         full_debits_label.pack()
 
         fair_share = full_total_debits/len(self.file_insights.keys())
-        fair_share_label = tk.Label(
+        fair_share_label = ttk.Label(
             self, text="Fair Share: {fair_share}".format(fair_share=round(fair_share, 3)))
         fair_share_label.pack()
 
         for file_person, insights in self.file_insights.items():
-            fair_share_label = tk.Label(self, text="{person} owes {person_owing}".format(
-                person=file_person, person_owing=round(fair_share - insights['total_debits'], 3)))
-            fair_share_label.pack()
+            if (round(fair_share - insights['total_debits'], 3) > 0):
+                fair_share_label = ttk.Label(self, text="{person} owes {person_owing}".format(
+                    person=file_person, person_owing=round(fair_share - insights['total_debits'], 3)))
+                fair_share_label.pack()
 
     def calculate_totals(self):
         for file_name, file_transactions in self.transactions.items():
