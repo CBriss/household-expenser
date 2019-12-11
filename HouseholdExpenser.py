@@ -67,11 +67,16 @@ s.configure('TFrame', background=colors['DARK_GREY'])
 s.configure('TLabel', font=("Comic Sans ms", 19), background=colors['DARK_GREY'],
             foreground=colors['WHITE'])
 s.configure('Small.TLabel', font=("Comic Sans ms", 13))
+s.configure('XSmall.TLabel', font=("Comic Sans ms", 10))
 s.configure('TButton', font=("Comic Sans ms", 12))
-s.configure('TCheckbutton', background=colors['BLUE'],
+s.configure('TCheckbutton', background=colors['DARK_GREY'],
             foreground=colors['MED_GREY'])
 s.configure('TMenubutton', font=("Comic Sans ms", 19), background=colors['DARK_GREY'],
             foreground=colors['WHITE'])
+s.configure('Menu', font=("Comic Sans ms", 19), background=colors['DARK_GREY'],
+            foreground=colors['WHITE'])
+
+
 s.configure('TNotebook', font=("Comic Sans ms", 14), background=colors['DARK_GREY'],
             foreground=colors['WHITE'])
 app.geometry("800x650")

@@ -63,6 +63,7 @@ class TransactionManager(ttk.Frame):
         insights_button.grid(column=2, row=0, padx=10, pady=10)
         self.transactions = {}
         tab_container = ttk.Notebook(self)
+
         self.read_file_transactions(prepped_files, start_date, end_date)
         self.show_file_transactions(tab_container, start_date, end_date)
         tab_container.grid(column=0, row=1, columnspan=3,
@@ -111,7 +112,7 @@ class TransactionManager(ttk.Frame):
             tab = ttk.Frame(tab_container)
             canvas = tk.Canvas(tab)
             scroll_y = ttk.Scrollbar(
-                tab, orient="vertical", command=canvas.yview)
+                tab, orient="vertical")
             canvas_frame = ttk.Frame(canvas)
             credits_frame = ttk.Frame(canvas_frame)
             debits_frame = ttk.Frame(canvas_frame)
@@ -133,13 +134,13 @@ class TransactionManager(ttk.Frame):
                 amount = transaction['amount']
                 date = transaction['date']
                 date_label = ttk.Label(
-                    frame, text="{date}".format(date=date), style='Small.TLabel')
+                    frame, text="{date}".format(date=date), style='XSmall.TLabel')
                 date_label.grid(column=0, row=row_number)
                 desc_label = ttk.Label(frame, text="{description}".format(
-                    description=transaction['description']), style='Small.TLabel')
+                    description=transaction['description']), style='XSmall.TLabel')
                 desc_label.grid(column=1, row=row_number)
                 amt_label = ttk.Label(
-                    frame, text="{amount}".format(amount=amount), style='Small.TLabel')
+                    frame, text="{amount}".format(amount=amount), style='XSmall.TLabel')
                 amt_label.grid(column=3, row=row_number)
                 checkbox = ttk.Checkbutton(
                     frame, variable=transaction['included'])
@@ -152,13 +153,18 @@ class TransactionManager(ttk.Frame):
             debits_label = ttk.Label(canvas_frame, text="Debits")
             debits_label.pack()
             debits_frame.pack()
-            canvas.create_window(0, 0, anchor='nw', window=canvas_frame)
+            canvas.create_window(0, 0, window=canvas_frame)
             canvas.update_idletasks()
             canvas.configure(scrollregion=canvas.bbox('all'),
                              yscrollcommand=scroll_y.set)
             canvas.pack(fill='both', expand=True, side='left')
-            scroll_y.pack(fill='y', side='right')
+            scroll_y.pack(fill='y', side='right', expand='false')
             tab_container.add(tab, text=file_name.split('\\')[-1])
+
+            canvas_frame.bind(
+                '<Enter>', lambda scroll_event: self._bound_to_mousewheel(scroll_event, canvas))
+            canvas_frame.bind('<Leave>', lambda scroll_event: self._unbound_to_mousewheel(
+                scroll_event, canvas))
 
     def show_transaction_headers(self, selected_frame):
         header_1 = ttk.Label(selected_frame, text="Date")
@@ -174,3 +180,14 @@ class TransactionManager(ttk.Frame):
         self.parent.frames['InsightsManager'].reset()
         self.parent.frames['InsightsManager'].show(self.transactions)
         self.parent.show_frame('InsightsManager')
+
+    def _bound_to_mousewheel(self, event, canvas):
+        canvas.bind_all(
+            "<MouseWheel>", lambda scroll_event: self._on_mousewheel(scroll_event, canvas))
+
+    def _unbound_to_mousewheel(self, event, canvas):
+        canvas.unbind_all("<MouseWheel>")
+
+    def _on_mousewheel(self, event, canvas):
+        canvas.bind_all('<MouseWheel>', lambda event: canvas.yview_scroll(
+            int(-1*(event.delta/120)), "units"))

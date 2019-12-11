@@ -219,8 +219,6 @@ class InfoManager(ttk.Frame):
             choices = sorted(CSV_FORMATS.keys())
             option_menu = ttk.OptionMenu(
                 person_frame, option_var, 'none', *choices)
-            print(option_menu.keys())
-            print(option_menu['menu'].keys())
             option_menu.grid(column=3, row=file_index+1)
             self.file_types["{person_name} - {file_name}".format(
                 person_name=person, file_name=file_name.split("\\")[-1])] = option_var
